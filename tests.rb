@@ -8,11 +8,14 @@ class TestMe < Minitest::Test
   def teardown; end
 
   def test_logic
+    assert true
+    refute false
     assert_equal true, true
   end
 
   def test_math
     assert_equal 2, 1 + 1
+    refute_equal 1337, 1 + 1
   end
 
   def test_setup
