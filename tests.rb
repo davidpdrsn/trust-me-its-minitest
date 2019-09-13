@@ -22,4 +22,14 @@ class TestMe < Minitest::Test
   def test_setup
     assert_equal @setup_executed, 1
   end
+
+  def test_calling_helper_method
+    assert_equal 1, helper_method
+  end
+
+  private
+
+  def helper_method
+    1
+  end
 end
