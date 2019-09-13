@@ -5,9 +5,7 @@ class TestMe < Minitest::Test
     @setup_executed = true
   end
 
-  def teardown
-    puts "teardown executed"
-  end
+  def teardown; end
 
   def test_logic
     assert_equal true, true

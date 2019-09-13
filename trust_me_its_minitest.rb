@@ -51,21 +51,21 @@ module Minitest
       instance = new
 
       RSpec.describe self do
+        if instance.respond_to?(:setup)
+          before(:each) do
+            instance.rspec = self
+            instance.send(:setup)
+          end
+        end
+
+        if instance.respond_to?(:teardown)
+          after(:each) do
+            instance.rspec = self
+            instance.send(:teardown)
+          end
+        end
+
         @@tests.each do |name|
-          if instance.respond_to?(:setup)
-            before(:each) do
-              instance.rspec = self
-              instance.send(:setup)
-            end
-          end
-
-          if instance.respond_to?(:teardown)
-            after(:each) do
-              instance.rspec = self
-              instance.send(:teardown)
-            end
-          end
-
           spec_doc =  name.to_s.sub("test_", "")
           it spec_doc do
             instance.rspec = self
