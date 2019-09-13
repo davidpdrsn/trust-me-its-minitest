@@ -56,18 +56,24 @@ module Minitest
     end
 
     def self.generate_rspec_tests
-      instance = new
+      klass = self
 
       RSpec.describe self do
-        if instance.respond_to?(:setup)
+        if klass.new.respond_to?(:setup)
           before(:each) do
+            instance = klass.new
+            instance_variable_set(:"@__trust_me_instance", instance)
+
             instance.rspec = self
             instance.send(:setup)
           end
         end
 
-        if instance.respond_to?(:teardown)
+        if klass.new.respond_to?(:teardown)
           after(:each) do
+            instance = instance_variable_get(:"@__trust_me_instance") ||
+              klass.new
+
             instance.rspec = self
             instance.send(:teardown)
           end
@@ -76,6 +82,9 @@ module Minitest
         @@tests.each do |name|
           spec_doc =  name.to_s.sub("test_", "")
           it spec_doc do
+            instance = instance_variable_get(:"@__trust_me_instance") ||
+              klass.new
+
             instance.rspec = self
             instance.send(name)
           end
