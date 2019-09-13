@@ -37,6 +37,10 @@ module Assertions
       super
     end
   end
+
+  def respond_to_missing?(name, _)
+    rspec.respond_to?(name) || super
+  end
 end
 
 module Minitest
