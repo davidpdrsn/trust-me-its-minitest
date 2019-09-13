@@ -2,7 +2,11 @@ require_relative "trust_me_its_minitest"
 
 class TestMe < Minitest::Test
   def setup
-    @setup = true
+    @setup_executed = true
+  end
+
+  def teardown
+    puts "teardown executed"
   end
 
   def test_logic
@@ -14,6 +18,6 @@ class TestMe < Minitest::Test
   end
 
   def test_setup
-    assert @setup
+    assert @setup_executed
   end
 end
