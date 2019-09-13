@@ -13,19 +13,19 @@ end.enable
 
 module Assertions
   def assert_equal(a, b)
-    expect(a).to(eq(b))
+    expect(a).to eq b
   end
 
   def refute_equal(a, b)
-    expect(a).to_not(eq(b))
+    expect(a).to_not eq b
   end
 
   def assert(a)
-    expect(a).to(be_truthy)
+    expect(a).to be_truthy
   end
 
   def refute(a)
-    expect(a).to(be_falsy)
+    expect(a).to be_falsy
   end
 
   attr_accessor :rspec
