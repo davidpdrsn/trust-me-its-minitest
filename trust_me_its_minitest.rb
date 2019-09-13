@@ -13,14 +13,22 @@ end.enable
 
 module Assertions
   def assert_equal(a, b)
-    rspec.expect(a).to(rspec.equal(b))
+    expect(a).to(eq(b))
   end
 
   def assert(a)
-    rspec.expect(a).to(rspec.be_truthy)
+    expect(a).to(be_truthy)
   end
 
   attr_accessor :rspec
+
+  def method_missing(name, *args, &block)
+    if rspec.respond_to?(name)
+      rspec.send(name, *args, &block)
+    else
+      super
+    end
+  end
 end
 
 module Minitest
