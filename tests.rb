@@ -27,6 +27,10 @@ class TestMe < Minitest::Test
     assert_equal 1, helper_method
   end
 
+  def test_rspec_expectations_still_work
+    expect([]).to be_empty
+  end
+
   private
 
   def helper_method
