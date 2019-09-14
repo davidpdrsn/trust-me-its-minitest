@@ -47,17 +47,9 @@ module Minitest
   class Test
     include Assertions
 
-    def self.inherited(child)
-      @@tests = []
-    end
-
-    def self.method_added(name)
-      if name.to_s.match?(/^test_/)
-        @@tests << name
-      end
-    end
-
     def self.generate_rspec_tests
+      test_methods = instance_methods(false).map(&:to_s).grep(/test_/)
+
       klass = self
 
       RSpec.describe self do
@@ -84,7 +76,7 @@ module Minitest
           end
         end
 
-        @@tests.each do |name|
+        test_methods.each do |name|
           spec_doc =  name.to_s.sub("test_", "")
           it spec_doc do
             instance = instance_variable_get(:"@__trust_me_instance") ||
