@@ -64,6 +64,9 @@ module Minitest
         if klass.new.respond_to?(:setup)
           before(:each) do
             instance = klass.new
+            # instance variables set in `setup` need to be visible in the test
+            # methods. So wee need to store the instance so we can get at it
+            # later
             instance_variable_set(:"@__trust_me_instance", instance)
 
             instance.rspec = self
