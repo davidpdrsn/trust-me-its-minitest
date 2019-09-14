@@ -69,7 +69,7 @@ module Minitest
         if klass.new.respond_to?(:teardown)
           after(:each) do
             instance = instance_variable_get(:"@__trust_me_instance") ||
-              klass.new
+              raise("`@__trust_me_instance` never set")
 
             instance.rspec = self
             instance.send(:teardown)
@@ -79,8 +79,13 @@ module Minitest
         test_methods.each do |name|
           spec_doc =  name.to_s.sub("test_", "")
           it spec_doc do
-            instance = instance_variable_get(:"@__trust_me_instance") ||
-              klass.new
+            instance = instance_variable_get(:"@__trust_me_instance") || begin
+              instance = klass.new
+              # we again need to store the instance, this time so `teardown`
+              # can access it
+              instance_variable_set(:"@__trust_me_instance", instance)
+              instance
+            end
 
             instance.rspec = self
             instance.send(name)

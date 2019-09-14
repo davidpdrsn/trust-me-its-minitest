@@ -37,3 +37,13 @@ class TestMe < Minitest::Test
     1
   end
 end
+
+class TeardownReusesInstanceTests < Minitest::Test
+  def test_foo
+    @foo = true
+  end
+
+  def teardown
+    assert @foo
+  end
+end
