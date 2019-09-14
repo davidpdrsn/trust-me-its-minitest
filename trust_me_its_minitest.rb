@@ -45,17 +45,15 @@ end
 
 module Minitest
   class Test
+    include Assertions
+
     def self.inherited(child)
-      @@tests ||= []
+      @@tests = []
+    end
 
-      child.instance_eval do
-        def self.method_added(name)
-          if name.to_s.match?(/^test_/)
-            @@tests << name
-          end
-        end
-
-        include Assertions
+    def self.method_added(name)
+      if name.to_s.match?(/^test_/)
+        @@tests << name
       end
     end
 
